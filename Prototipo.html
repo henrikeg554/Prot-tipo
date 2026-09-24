@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>vai passar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600&family=Newsreader:ital,wght@0,400;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --fog-0:#111114;
+    --fog-1:#232327;
+    --fog-2:#3c3c41;
+    --fog-3:#63636a;
+    --fog-4:#9a9aa1;
+    --fog-5:#d9d9dd;
+    --line-max: 620px;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{ box-sizing: inherit; }
+  html{
+    scroll-padding-top: env(safe-area-inset-top, 0px);
+  }
+  html, body{
+    margin:0;
+    padding:0;
+    background: var(--fog-0);
+    color: var(--fog-5);
+    font-family: 'Newsreader', serif;
+    overflow-x: hidden;
+  }
+
+  /* textura de ruído sutil, para não ficar um cinza plano de gradiente */
+  body::before{
+    content:"";
+    position: fixed;
+    inset:0;
+    pointer-events:none;
+    opacity: 0.05;
+    z-index: 5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  header{
+    min-height: 100svh;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding: 2rem 1.5rem;
+    position: relative;
+  }
+  .eyebrow{
+    font-family:'Newsreader', serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--fog-3);
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
+    margin-bottom: 1.4rem;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight: 300;
+    font-size: clamp(2.6rem, 9vw, 5.5rem);
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--fog-5);
+    line-height: 1.05;
+  }
+  .sub{
+    margin-top: 1.6rem;
+    max-width: 30ch;
+    color: var(--fog-4);
+    font-style: italic;
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  .scrolldown{
+    position:absolute;
+    bottom: calc(2.2rem + env(safe-area-inset-bottom, 0px));
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    gap: 0.5rem;
+    color: var(--fog-3);
+    font-size: 0.8rem;
+    font-style: italic;
+  }
+  .scrolldown span.stick{
+    width:1px;
+    height: 34px;
+    background: linear-gradient(to bottom, var(--fog-3), transparent);
+    animation: drift 2.6s ease-in-out infinite;
+  }
+  @keyframes drift{
+    0%,100%{ transform: translateY(0); opacity:0.7;}
+    50%{ transform: translateY(6px); opacity:0.25;}
+  }
+
+  main{
+    max-width: var(--line-max);
+    margin: 0 auto;
+    padding: 4vh 1.5rem 40vh;
+  }
+
+  .stanza{
+    margin: 22vh 0;
+    text-align: center;
+  }
+  .stanza:first-child{ margin-top: 4vh; }
+
+  .stanza p{
+    font-family:'Newsreader', serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.25rem, 4vw, 1.65rem);
+    line-height: 1.85;
+    color: var(--fog-3);
+    opacity: 0.18;
+    filter: blur(3px);
+    transition: opacity 1.1s ease, filter 1.1s ease, color 1.1s ease;
+    margin: 0;
+  }
+
+  .stanza.active p{
+    opacity: 1;
+    filter: blur(0px);
+    color: var(--fog-5);
+  }
+
+  .closing{
+    text-align:center;
+    padding: 8vh 1.5rem 18vh;
+  }
+  .closing p{
+    font-family:'Fraunces', serif;
+    font-weight: 400;
+    font-size: clamp(1.5rem, 5vw, 2.1rem);
+    color: var(--fog-4);
+    opacity: 0.15;
+    filter: blur(3px);
+    transition: opacity 1.4s ease, filter 1.4s ease, color 1.4s ease;
+    max-width: 22ch;
+    margin: 0 auto;
+    line-height: 1.4;
+  }
+  .closing.active p{
+    opacity:1;
+    filter: blur(0);
+    color: var(--fog-5);
+  }
+
+  footer{
+    text-align:center;
+    padding: 3rem 1.5rem calc(3rem + env(safe-area-inset-bottom, 0px));
+    color: var(--fog-2);
+    font-size: 0.78rem;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .stanza p, .closing p{
+      transition: none;
+      opacity: 1;
+      filter: blur(0);
+      color: var(--fog-5);
+    }
+    .scrolldown span.stick{ animation: none; }
+  }
+
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --fog-0:#e9e9ea;
+      --fog-1:#d7d7d9;
+      --fog-2:#b9b9bc;
+      --fog-3:#8a8a8f;
+      --fog-4:#55555a;
+      --fog-5:#1c1c1f;
+    }
+  }
+  :root[data-theme="dark"]{
+    --fog-0:#111114; --fog-1:#232327; --fog-2:#3c3c41;
+    --fog-3:#63636a; --fog-4:#9a9aa1; --fog-5:#d9d9dd;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">um poema sobre o que pesa sem nome</div>
+  <h1>vai&nbsp;passar</h1>
+  <p class="sub">talvez não hoje. talvez não do jeito que você espera.</p>
+  <div class="scrolldown"><span>desça devagar</span><span class="stick"></span></div>
+</header>
+
+<main id="poem">
+  <div class="stanza"><p>Hoje o dia nasceu cinza<br>antes mesmo do sol tentar.<br>Vesti o mesmo peso de ontem<br>que esqueci de tirar.</p></div>
+
+  <div class="stanza"><p>Não é tristeza que se explica,<br>é um aperto sem porta,<br>um quarto que fica menor<br>a cada hora que passa morta.</p></div>
+
+  <div class="stanza"><p>Falo, e a voz sai baixa,<br>como quem pede desculpa<br>por ainda estar aqui,<br>por ainda ocupar a sala.</p></div>
+
+  <div class="stanza"><p>Conto os dias pelo avesso,<br>do fim pro começo,<br>tentando entender em que hora exata<br>o chão ficou tão espesso.</p></div>
+
+  <div class="stanza"><p>Dizem que isso passa.<br>Eu acredito, meio sem crer,<br>do jeito que se acredita<br>numa luz que ainda não se vê.</p></div>
+
+  <div class="stanza"><p>Então espero.<br>Não porque tenha fé —<br>só porque cansei de lutar<br>contra a maré.</p></div>
+</main>
+
+<div class="closing">
+  <p>e talvez, bem devagar,<br>isso passe.</p>
+</div>
+
+<footer>cinza. — um poema, não uma cura.</footer>
+
+<script>
+(function(){
+  var els = document.querySelectorAll('.stanza, .closing');
+  if(!('IntersectionObserver' in window)){
+    els.forEach(function(el){ el.classList.add('active'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting && entry.intersectionRatio > 0.45){
+        entry.target.classList.add('active');
+      } else {
+        entry.target.classList.remove('active');
+      }
+    });
+  }, { threshold: [0, 0.45, 1], rootMargin: '-10% 0px -10% 0px' });
+
+  els.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>
